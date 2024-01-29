@@ -14,12 +14,12 @@ class RequestLogger
 
     public function log(array $response, int $processingTime)
     {
-        if (!$this->shouldLog && !empty($response['usage'])) {
+        if (!$this->shouldLog || empty($response['model']) || empty($response['usage'])) {
             return;
         }
 
         $this->events[] = [
-            'id' => $response['id'],
+            'id' => $response['id'] ?? null,
             'model' => $response['model'],
             'usage' => $response['usage'],
             'processing_time' => $processingTime,

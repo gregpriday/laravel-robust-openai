@@ -33,8 +33,6 @@ return [
             'prompt_tokens' => 0.01,
             'completion_tokens' => 0.03,
         ],
-
-        // All the fine-tuned models
         'fine-tuned' => [
             'ft:gpt-3.5-turbo-1106:' => [
                 'prompt_tokens' => 0.0030,
@@ -48,6 +46,15 @@ return [
                 'prompt_tokens' => 0.0016,
                 'completion_tokens' => 0.0016,
             ],
-        ]
+        ],
+        'text-embedding-3-small' => [
+            'prompt_tokens' => 0.00002,
+        ],
+        'text-embedding-3-large' => [
+            'prompt_tokens' => 0.00013,
+        ],
+        'text-embedding-ada-002' => [
+            'prompt_tokens' => 0.00010,
+        ],
     ]
 ];

@@ -4,6 +4,7 @@ namespace GregPriday\RobustOpenAI\Tests;
 
 use GregPriday\RobustOpenAI\Facades\OpenAI;
 use GregPriday\RobustOpenAI\Facades\RequestLogger;
+use http\Env\Request;
 
 class TestRequestLogger extends TestCase
 {
@@ -27,15 +28,18 @@ class TestRequestLogger extends TestCase
                 ]);
         });
 
-        dd($logger->toArray());
+        dd($logger->cost());
     }
 
     public function test_embedding_request()
     {
+        RequestLogger::start();
         $response = OpenAI::embeddings()
             ->create([
                 'model' => 'text-embedding-3-large',
                 'input' => 'The food was delicious and the waiter...',
             ]);
+
+        $logger = RequestLogger::stop();
     }
 }
