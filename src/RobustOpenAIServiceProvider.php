@@ -23,10 +23,8 @@ class RobustOpenAIServiceProvider extends PackageServiceProvider
          */
         $package
             ->name('laravel-robust-openai')
-            ->hasConfigFile()
-            ->hasViews()
-            ->hasMigration('create_openai_logs_table')
-            ->hasCommand(RobustOpenAICommand::class);
+            ->hasConfigFile('robust-openai')
+            ->hasMigration('create_openai_logs_table');
     }
 
     public function packageBooted()
