@@ -5,7 +5,6 @@ namespace GregPriday\RobustOpenAI;
 class RequestLogger
 {
     private array $events = [];
-    private array $processingTimes = [];
     private bool $shouldLog;
 
     public function __construct(bool $shouldLog = false)
@@ -15,14 +14,16 @@ class RequestLogger
 
     public function log(array $response, int $processingTime)
     {
-        if (!$this->shouldLog) {
+        if (!$this->shouldLog && !empty($response['usage'])) {
             return;
         }
 
-        $id = $response['id'];
-
-        $this->events[$id] = $response;
-        $this->processingTimes[$id] = $processingTime;
+        $this->events[] = [
+            'id' => $response['id'],
+            'model' => $response['model'],
+            'usage' => $response['usage'],
+            'processing_time' => $processingTime,
+        ];
     }
 
     public function cost(): float
@@ -30,28 +31,39 @@ class RequestLogger
         $costs = config('robust-openai.costs');
         $total = 0;
         foreach($this->events as $event) {
+            $cost = $costs[$event['model']];
+
+            // This might be a fine tuned model
+            if (empty($cost) && str_starts_with($event['model'], 'ft:')) {
+                foreach($costs['fine-tuned'] as $prefix => $cost) {
+                    if (str_starts_with($event['model'], $prefix)) {
+                        break;
+                    }
+                }
+            }
+
+            if(empty($cost)) {
+                continue;
+            }
+
             foreach($event['usage'] as $k => $v) {
-                $total += ($costs[$event['model']][$k] ?? 0) * $v / 1000;
+                $total += ($cost[$k] ?? 0) * $v / 1000;
             }
         }
 
         return $total;
     }
 
-    /**
-     * Get the processing times for the events
-     */
-    public function processingTimes(): array
-    {
-        return $this->processingTimes;
-    }
-
     public function toArray()
     {
         return [
             'events' => $this->events,
-            'processing_times' => $this->processingTimes,
             'cost' => $this->cost(),
         ];
+    }
+
+    public function toJson()
+    {
+        return json_encode($this->toArray(), JSON_PRETTY_PRINT);
     }
 }

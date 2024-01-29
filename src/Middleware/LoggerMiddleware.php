@@ -39,7 +39,7 @@ class LoggerMiddleware
     protected function onFulfilled(RequestInterface $request, array $options): callable
     {
         return function (ResponseInterface $response) use ($request, $options) {
-            if (config('robust-openai.log_requests', false)) {
+            if (config('robust-openai.log.usage', true)) {
                 // Read the contents of the body
                 $body = $response->getBody();
                 $contents = $body->getContents();

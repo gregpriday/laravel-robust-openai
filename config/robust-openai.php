@@ -1,7 +1,9 @@
 <?php
 
 return [
-    'log_requests' => true,
+    'log' => [
+        'usage' => true,
+    ],
     'costs' => [
         'gpt-3.5-turbo-1106' => [
             'prompt_tokens' => 0.0010,
@@ -31,26 +33,21 @@ return [
             'prompt_tokens' => 0.01,
             'completion_tokens' => 0.03,
         ],
-        'gpt-3.5-turbo' => [
-            'fine_tuned' => [
-                'training_tokens' => 0.0080,
+
+        // All the fine-tuned models
+        'fine-tuned' => [
+            'ft:gpt-3.5-turbo-1106:' => [
                 'prompt_tokens' => 0.0030,
                 'completion_tokens' => 0.0060,
-            ]
-        ],
-        'davinci-002' => [
-            'fine_tuned' => [
-                'training_tokens' => 0.0060,
+            ],
+            'ft:davinci-002:' => [
                 'prompt_tokens' => 0.0120,
                 'completion_tokens' => 0.0120,
-            ]
-        ],
-        'babbage-002' => [
-            'fine_tuned' => [
-                'training_tokens' => 0.0004,
+            ],
+            'ft:babbage-002:' => [
                 'prompt_tokens' => 0.0016,
                 'completion_tokens' => 0.0016,
-            ]
-        ],
+            ],
+        ]
     ]
 ];
