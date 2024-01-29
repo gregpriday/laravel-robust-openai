@@ -1,12 +1,12 @@
 <?php
 
-namespace VendorName\Skeleton\Commands;
+namespace GregPriday\RobustOpenAI\Commands;
 
 use Illuminate\Console\Command;
 
-class SkeletonCommand extends Command
+class RobustOpenAICommand extends Command
 {
-    public $signature = 'skeleton';
+    public $signature = 'laravel-robust-openai';
 
     public $description = 'My command';
 

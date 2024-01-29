@@ -1,26 +1,24 @@
 <?php
 
-namespace VendorName\Skeleton\Tests;
+namespace GregPriday\RobustOpenAI\Tests;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use OpenAI\Laravel\ServiceProvider as OpenAIServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
-use VendorName\Skeleton\SkeletonServiceProvider;
+use GregPriday\RobustOpenAI\RobustOpenAIServiceProvider;
 
 class TestCase extends Orchestra
 {
     protected function setUp(): void
     {
         parent::setUp();
-
-        Factory::guessFactoryNamesUsing(
-            fn (string $modelName) => 'VendorName\\Skeleton\\Database\\Factories\\'.class_basename($modelName).'Factory'
-        );
     }
 
     protected function getPackageProviders($app)
     {
         return [
-            SkeletonServiceProvider::class,
+            RobustOpenAIServiceProvider::class,
+            OpenAIServiceProvider::class,
         ];
     }
 
@@ -28,8 +26,12 @@ class TestCase extends Orchestra
     {
         config()->set('database.default', 'testing');
 
+        // Load the openai.php config
+        $app['config']->set('openai', require __DIR__.'/../config/openai.php');
+
+
         /*
-        $migration = include __DIR__.'/../database/migrations/create_skeleton_table.php.stub';
+        $migration = include __DIR__.'/../database/migrations/create_laravel-robust-openai_table.php.stub';
         $migration->up();
         */
     }
