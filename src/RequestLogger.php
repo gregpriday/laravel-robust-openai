@@ -31,9 +31,9 @@ class RequestLogger
         $costs = config('robust-openai.costs');
         $total = 0;
         foreach($this->events as $event) {
-            $cost = $costs[$event['model']];
+            $cost = $costs[$event['model']] ?? null;
 
-            // This might be a fine tuned model
+            // This might be a fine-tuned model
             if (empty($cost) && str_starts_with($event['model'], 'ft:')) {
                 foreach($costs['fine-tuned'] as $prefix => $cost) {
                     if (str_starts_with($event['model'], $prefix)) {
