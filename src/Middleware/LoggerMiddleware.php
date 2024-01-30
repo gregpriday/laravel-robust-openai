@@ -50,7 +50,9 @@ class LoggerMiddleware
                 // Decode the JSON response
                 $r = json_decode($contents, true);
 
-                RequestLogger::log($r, $response->getHeader('openai-processing-ms')[0]);
+                if(!empty($response->getHeader('openai-processing-ms')[0])) {
+                    RequestLogger::log($r, $response->getHeader('openai-processing-ms')[0] ?? 0);
+                }
             }
 
             return $response;
